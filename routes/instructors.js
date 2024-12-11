@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+module.exports = router;
 
 var instructors = [
   { id: 0, name: 'Po' }

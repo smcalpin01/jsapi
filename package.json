@@ -11,11 +11,14 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "knex": "^3.1.0",
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.11.3",
+    "objection": "^3.1.4"
   },
   "description": "��#\u0000 \u0000j\u0000s\u0000a\u0000p\u0000i\u0000\r\u0000 \u0000",
   "main": "app.js",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/smcalpin01/jsapi.git"

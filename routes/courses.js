@@ -1,5 +1,10 @@
 var express = require('express');
 var router = express.Router();
+const {retrieveCourseByCcode, retrieveCourseNameLevelDescByCcode, retrieveCourseNameLevelDescByCcodeJoin} = require('../daos/course-dao.js');
+//const retrieveCourseNameLevelDescByCcode = require('../daos/course-dao.js');
+const getCourseFromDB = require('../daos/course-dao.js');
+
+
 
 var courses = [
   { id: 0, name: 'Advanced Networking' }
@@ -18,14 +23,59 @@ function getCourse (req, res, next) {
 router.get('/', (req, res) => 
    {res.send('Courses are: ' + JSON.stringify(courses))});
 
-/* /course by id API call.  This API call receives a path parameter in :id, looks up the course in the
-    course table using the id, and returns the course name */
 
-router.get('/:id', getCourse, function (req, res)  {
- res.send('Course name is: ' +  req.course.name )}
-)
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+
+    console.log('In Get  ');
+    console.log('req.params.id  ' + req.params.id);
+  const courseName = await retrieveCourseByCcode (id);
+  if (courseName) {
+    res.json ({courseName});
+  } else
+    res.status(404).json({error: 'Course not found' });
+  }
+  catch (error) {
+  res.status(500).json({error: 'Internal Server Error' });
+}
+});
+
+router.get('/All/:id', async (req, res) => {
+  
+  const { id } = req.params;
+ 
+  try {
+    console.log('In Get/All  ');
+    console.log('req.params.id  ' + req.params.id);
+  const courseName = await retrieveCourseNameLevelDescByCcode (id);
+  if (courseName) {
+    res.json ({courseName});
+  } else
+    res.status(404).json({error: 'Course not found' });
+  }
+  catch (error) {
+  res.status(500).json({error: 'Internal Server Error' });
+}
+});
+
+router.get('/course_section/:id', async (req, res) => {
+  
+  const { id } = req.params;
+ 
+  try {
+    console.log('In Get/course_section  ');
+    console.log('req.params.id  ' + req.params.id);
+  const course_section = await retrieveCourseNameLevelDescByCcodeJoin (id);
+  if (course_section) {
+    res.json ({course_section});
+  } else
+    res.status(404).json({error: 'Course not found' });
+  }
+  catch (error) {
+  res.status(500).json({error: 'Internal Server Error' });
+}
+});
 /*  This statement exports the router */
 
 module.exports = router;
-
-//  res.send('Course name is: ' + JSON.stringify({ id: 0, name: 'Advanced Networking' }))}
