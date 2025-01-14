@@ -1,10 +1,13 @@
+/*
+To get:  localhost:3000/courses/33112
+localhost:3000/courses/All/33112
+*/
+
 var express = require('express');
 var router = express.Router();
-const {retrieveCourseByCcode, retrieveCourseNameLevelDescByCcode, retrieveCourseNameLevelDescByCcodeJoin} = require('../daos/course-dao.js');
+const {retrieveCourseByCcode, retrieveCourseNameLevelDescByCcode, retrieveCourseNameLevelDescByCcodeJoin, insertCourse} = require('../daos/course-dao.js');
 //const retrieveCourseNameLevelDescByCcode = require('../daos/course-dao.js');
 const getCourseFromDB = require('../daos/course-dao.js');
-
-
 
 var courses = [
   { id: 0, name: 'Advanced Networking' }
@@ -23,6 +26,25 @@ function getCourse (req, res, next) {
 router.get('/', (req, res) => 
    {res.send('Courses are: ' + JSON.stringify(courses))});
 
+router.post('/insert/:id', async (req, res) => {
+  try {
+
+    console.log('In post  ');
+  const retCode = await insertCourse (req.body);
+  console.log('retCode:  ' + retCode);
+  if (retCode==="success") {
+    res.status(200).json("insert successful");
+  }
+  else
+  {
+    res.status(404).json({error: 'Insert not successful' });
+  }
+}
+
+  catch (error) {
+  res.status(500).json({error: 'Internal Server Error' })
+  }
+})
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
@@ -40,6 +62,7 @@ router.get('/:id', async (req, res) => {
   res.status(500).json({error: 'Internal Server Error' });
 }
 });
+
 
 router.get('/All/:id', async (req, res) => {
   
