@@ -26,7 +26,7 @@ function getCourse (req, res, next) {
 router.get('/', (req, res) => 
    {res.send('Courses are: ' + JSON.stringify(courses))});
 
-router.post('/insert/:id', async (req, res) => {
+router.post('/insert', async (req, res) => {
   try {
 
     console.log('In post  ');
